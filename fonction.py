@@ -17,3 +17,19 @@ def p_names ():
         if name not in list_names :
             list_names.append(name)
     return list_names
+
+
+def clean_files(file_name):
+    with open("speeches/"+file_name, "r", encoding="utf-8") as file, open("cleaned/"+file_name, "w", encoding="utf-8") as file_clean:
+        f_content = file.read()
+        new_content = ""
+        world = ""
+        for carac in f_content:
+            if (ord(carac) >= 65 and ord(carac) <= 90) or (ord(carac) >= 192 and ord(carac) <= 223):
+                world += chr(ord(carac)+32)
+            elif (ord(carac) >= 97 and ord(carac) <= 122) or (ord(carac) >= 224 and ord(carac) <= 255):
+                world += carac
+            elif world != "":
+                new_content += world + " "
+                world = ""
+        file_clean.write(new_content)
