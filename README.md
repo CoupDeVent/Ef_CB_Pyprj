@@ -13,7 +13,7 @@
 (_____)                                                   (_____)
 </pre>
  
-GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--Menu // https://github.com/CoupDeVent/pychatbot-Eytan-Tim-F.git
+GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--Menu / https://github.com/CoupDeVent/pychatbot-Eytan-Tim-F.git
 
 
 ## Installation
