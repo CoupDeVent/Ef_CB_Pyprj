@@ -9,7 +9,7 @@ import math
 
 def list_of_files(directory, extension):
     """
-    list_of_files : liste tout les noms de fichier dans un dossier.
+    list_of_files : liste tous les noms de fichier dans un dossier.
     - Entrées : directory = dossier des fichiers a listés. // extension = l'extension commune de tous les fichiers.
     - Sortie : files_names = une liste de tous les noms des fichiers listés.
     """
