@@ -123,7 +123,7 @@ def tf_idf(list_of_files):
     """
     idf_dic = idf(list_of_files)
     m_tf_idf = [[[] for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
-    dic_column = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
+    dic_column = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file". (zip() permet de mettre les deux variable en tuple pour les utiliser dans comme valeurs de boucle.) 
     dic_line = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
 
     for file in list_of_files:
