@@ -9,9 +9,9 @@ import math
 
 def list_of_files(directory, extension):
     """
-    list_of_files : liste tout les noms de fichier dans un dossier.
-    - Entrées : directory = dossier des fichiers a listés. // extension = l'extension commune de tout les fichiers.
-    - Sortie : files_names = une liste de tout les noms des fichiers listés.
+    list_of_files : liste tous les noms de fichier dans un dossier.
+    - Entrées : directory = dossier des fichiers a listés. // extension = l'extension commune de tous les fichiers.
+    - Sortie : files_names = une liste de tous les noms des fichiers listés.
     """
     files_names = []
     for filename in os.listdir(directory):
@@ -21,10 +21,10 @@ def list_of_files(directory, extension):
 
 def s_p_names(directory, extension):
     """
-        s_p_names : donne tout les noms des présidents grace a un dossier spécifier en entré en suivant la logique de nomination des fichiers speeches.
-        - Entrées : directory = dossier des fichiers. // extension = l'extension commune de tout les fichiers.
-        - Sortie : p_names = une liste de tout les prénom et nom des président du dossier.
-        /!\ : tout les fichiers du dossier doivent suivre une nomination spécifique.
+        s_p_names : donne tous les noms des présidents grâce à un dossier spécifié en entrée en suivant la logique de nomination des fichiers speeches.
+        - Entrées : directory = dossier des fichiers. // extension = l'extension commune de tous les fichiers.
+        - Sortie : p_names = une liste de tous les prénoms et nom des présidents du dossier.
+        /!\ : tous les fichiers du dossier doivent suivre une nomination spécifique.
     """
     p_f_names = {
         "Giscard dEstaing": "Valéry",
@@ -47,11 +47,11 @@ def s_p_names(directory, extension):
 
 def clean_files(file_name):
     """
-        clean_files : clean le fichier donné en entré de toutes ses : majuscule, marque de ponctuation, espace supérieur a 1 et saut de ligne. (fichier ouvert en utf-8)
+        clean_files : clean le fichier donné en entrée de toutes ses : majuscules, marques de ponctuation, espaces supérieurs à 1 et sauts de ligne. (fichier ouvert en utf-8)
         - Entrées : file_name = nom du fichier a clean.
-        - Sortie : créer/modifie un fichier du même nom dans un dossier "cleaned" avec les modification.
-        /!\ : nécésite un dossier "cleaned" créer au préalable.
-        /!\ : si fichier déjà présent dans le dossier "cleaned" alors son contenu sera écraser.
+        - Sortie : créer/modifie un fichier du même nom dans un dossier "cleaned" avec les modifications.
+        /!\ : nécessite un dossier "cleaned" créé au préalable.
+        /!\ : si fichier déjà présent dans le dossier "cleaned" alors son contenu sera écrasé.
     """
     with open("speeches/"+file_name, "r", encoding="utf-8") as file, open("cleaned/"+file_name, "w", encoding="utf-8") as file_clean:
         f_content = file.read()
@@ -75,7 +75,7 @@ def tf(file_name):
     """
         tf : Donne la fréquence d'un terme dans un fichier.
         - Entrées : file_name = nom du fichier a tf-idéiser.
-        - Sortie : dic_of_words = un dictionnaire de tout les mots du fichier avec leur fréquence.
+        - Sortie : dic_of_words = un dictionnaire de tous les mots du fichier avec leur fréquence.
     """
     with open("cleaned/"+file_name, "r", encoding="utf-8") as file:
         f_content = file.read()
@@ -97,7 +97,7 @@ def idf(list_of_files):
     """
         idf : Calcule le score IDF (log((nb_fichier/nb_fichier_mot) + 1)) de chaque mot dans un dictionnaire.
         - Entrées : list_of_files = liste de nom de fichier.
-        - Sortie : idf_dic = un dictionnaire de tout les score IDF de tout les mot de tout les fichier de la liste de nom de fichier donné en entré.
+        - Sortie : idf_dic = un dictionnaire de tous les scores IDF de tous les mots de tous les fichiers de la liste de nom de fichier donnés en entrée.
     """
     words_of_files = {}
     for file in list_of_files:
