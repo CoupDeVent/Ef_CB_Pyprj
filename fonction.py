@@ -95,7 +95,7 @@ def tf(file_name):
 
 def idf(list_of_files):
     """
-        idf : Calcule le score IDF (log((nb_fichier/mot) + 1)) de chaque mot dans un dictionnaire.
+        idf : Calcule le score IDF (log((nb_fichier/nb_fichier_mot) + 1)) de chaque mot dans un dictionnaire.
         - Entrées : list_of_files = liste de nom de fichier.
         - Sortie : idf_dic = un dictionnaire de tout les score IDF de tout les mot de tout les fichier de la liste de nom de fichier donné en entré.
     """
@@ -104,12 +104,12 @@ def idf(list_of_files):
         dic = tf(file)
         for key in dic:
             if key in words_of_files:
-                words_of_files[key] += dic[key]
+                words_of_files[key] += 1
             else:
-                words_of_files[key] = dic[key]
+                words_of_files[key] = 1
     idf_dic = {}
     for key in words_of_files:
-        idf_dic[key] = math.log((len(list_of_files)/words_of_files[key]) + 1) # calcule du score idf : log((nb_fichier/mot) + 1)
+        idf_dic[key] = math.log((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot) + 1)
     return idf_dic
 
 def tf_idf(list_of_files):
@@ -117,21 +117,23 @@ def tf_idf(list_of_files):
         tf_idf : Calcule le score TF-IDF grace au deux dictionnaire donné par les deux fonctions ("tf" et "idf").
         - Entrées : list_of_files = liste de nom de fichier.
         - Sortie : m_tf_idf = une matrice des vecteur TF-IDF (colonne = fichier, ligne = mot)
-                   dic_column = un dictionnaire des fichier (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
-                   dic_line = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf")
+                   dic_files = un dictionnaire des fichier (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
+                   dic_words = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf")
         /!\ la sortie des 3 variable se fait en tuple.
     """
     idf_dic = idf(list_of_files)
-    m_tf_idf = [[[] for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
-    dic_column = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
-    dic_line = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
+    m_tf_idf = [[0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
+    dic_files = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
+    dic_words = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
 
     for file in list_of_files:
         tf_dic = tf(file)
         for word in tf_dic:
-            m_tf_idf[dic_line[word]][dic_column[file]] = tf_dic[word] * idf_dic[word] # calcule vecteur TF-IDF a l'emplacement du mot dans la matrice (ligne = valeur du mot dans le dictionnaire "dic_ligne", colonne = valeur du nom du fichier dans le dictionnaire "dic_column").
+            m_tf_idf[dic_words[word]][dic_files[file]] = tf_dic[word] * idf_dic[word] # calcule vecteur TF-IDF a l'emplacement du mot dans la matrice (ligne = valeur du mot dans le dictionnaire "dic_words", colonne = valeur du nom du fichier dans le dictionnaire "dic_files").
 
-    return (m_tf_idf, dic_column, dic_line) # tuple
+    return (m_tf_idf, dic_files, dic_words) # tuple
+
+
 
 
 
