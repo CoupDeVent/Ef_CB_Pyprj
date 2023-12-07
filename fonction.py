@@ -56,15 +56,15 @@ def clean_files(file_name):
     with open("speeches/"+file_name, "r", encoding="utf-8") as file, open("cleaned/"+file_name, "w", encoding="utf-8") as file_clean:
         f_content = file.read()
         new_content = ""
-        world = ""
-        for carac in f_content:
+        word = ""
+        for carac in (f_content + " "):
             if (ord(carac) >= 65 and ord(carac) <= 90) or (ord(carac) >= 192 and ord(carac) <= 223):
-                world += chr(ord(carac)+32)
+                word += chr(ord(carac)+32)
             elif (ord(carac) >= 97 and ord(carac) <= 122) or (ord(carac) >= 224 and ord(carac) <= 255):
-                world += carac
-            elif world != "":
-                new_content += world + " "
-                world = ""
+                word += carac
+            elif word != "":
+                new_content += word + " "
+                word = ""
         file_clean.write(new_content)
 
 
@@ -109,7 +109,7 @@ def idf(list_of_files):
                 words_of_files[key] = 1
     idf_dic = {}
     for key in words_of_files:
-        idf_dic[key] = math.log((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot) + 1)
+        idf_dic[key] = math.log10((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot))
     return idf_dic
 
 def tf_idf(list_of_files):
@@ -122,7 +122,7 @@ def tf_idf(list_of_files):
         /!\ la sortie des 3 variable se fait en tuple.
     """
     idf_dic = idf(list_of_files)
-    m_tf_idf = [[0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
+    m_tf_idf = [[0.0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
     dic_files = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
     dic_words = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
 
@@ -134,9 +134,42 @@ def tf_idf(list_of_files):
     return (m_tf_idf, dic_files, dic_words) # tuple
 
 
+### Partie II, Réponses aux questions. ###
 
+def tok(question):
+    words = []
+    word = ""
+    for carac in (question + " "):
+        if (ord(carac) >= 65 and ord(carac) <= 90) or (ord(carac) >= 192 and ord(carac) <= 223):
+            word += chr(ord(carac) + 32)
+        elif (ord(carac) >= 97 and ord(carac) <= 122) or (ord(carac) >= 224 and ord(carac) <= 255):
+            word += carac
+        elif word != "":
+            words.append(word)
+            word = ""
+    return words
 
+def question_in_corp(m_tf_idf, dic_files, dic_words, question):
+    question = tok(question)
+    result = []
+    for word in dic_words:
+        if word in question:
+            non_important = True
+            for val in m_tf_idf[dic_words[word]]:
+                if val != 0.0:
+                    non_important = False
+            if non_important == False:
+                result.append((word, m_tf_idf[dic_words[word]]))
+    return result
 
-
-
+def tf_idf_question(m_tf_idf, dic_files, dic_words, question):
+    m_tf_idf_question = [[0.0 for k in range(len(m_tf_idf[0]))] for i in range(len(m_tf_idf))]
+    tf_word_question = {}
+    for word in question:
+        """
+        faire foncton pas important
+        """
+        if word not in
+        tf_word_question[word] = tf(word)
+        
 

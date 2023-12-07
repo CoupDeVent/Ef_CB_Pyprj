@@ -28,22 +28,29 @@ if __name__ == '__main__':
 
     m_tf_idf, dic_files, dic_words = tf_idf(list_of_files)
 
+    question = "je sUis tom pèRe monsieur, nous p"
+    print(tok(question))
+    print(question_in_corp(m_tf_idf, dic_files, dic_words, question))
 
+
+    """
     ### affichage demander ###
-
+    
     print("1. Mots les moins importants.")
+    not_inportant = []
     for i_word in range(len(m_tf_idf)):
         result = True
         for i_file in range(len(m_tf_idf[0])):
-            if m_tf_idf[i_word][i_file] >= 0.5:
+            if m_tf_idf[i_word][i_file] != 0.0:
                 result = False
-
             if i_file == len(m_tf_idf[0])-1 and result == True:
-                print("    -", list(dic_words.keys())[i_word])
-
+                not_inportant.append(list(dic_words.keys())[i_word])
+    for word in not_inportant:
+        print("    -", word)
+    
     print(" ")
     print("2. Le mot avec le score TF-IDF le plus élevé.")
-    word_max = 0
+    word_max = ""
     max = 0
     words = dic_words.keys()
     for i_file in range(len(m_tf_idf[0])):
@@ -56,17 +63,24 @@ if __name__ == '__main__':
     print(" ")
     print("3. Le mot le plus répété par Chirac")
     list_file_chirac = ["Nomination_Chirac1.txt", "Nomination_Chirac2.txt"]
+    max_chirac = ""
+    chirac_words = {}
     max = 0
-    word_max = ""
     for file in list_file_chirac:
-        nb_words = tf(file)
-        for word in nb_words:
-            if nb_words[word] > max :
-                max = nb_words[word]
-                word_max = word
-            elif nb_words[word] == max:
-                word_max += " " + word
-    print("    -", word_max)
+        chirac_words_temp = tf(file)
+        for word in chirac_words_temp:
+            if word in chirac_words:
+                chirac_words[word] += chirac_words_temp[word]
+            else:
+                chirac_words[word] = chirac_words_temp[word]
+    for word in chirac_words:
+        if chirac_words[word] > max and word not in not_inportant:
+            max = chirac_words[word]
+            max_chirac = word
+        elif chirac_words[word] == max and word not in not_inportant:
+            max_chirac += word
+    for word in max_chirac:
+        print("    -", word)
 
     print(" ")
     print("4. les noms des présidents qui ont parlé de la « Nation » et celui qui l’a répété le plus de fois")
@@ -89,7 +103,6 @@ if __name__ == '__main__':
         for word in nb_words:
             if word == "nation" or word == "Nation":
                 p_nation_count[name_temp(file)] += 1
-
     p_max = ""
     max = 0
     for p in p_nation_count:
@@ -109,8 +122,8 @@ if __name__ == '__main__':
         nb_words = tf(file)
         for word in nb_words:
             if word == "climat" or word == "écoàlogie":
-                premier = name_temp(file)
-    print("    -", premier)
+                first = name_temp(file)
+    print("    -", first)
 
     print(" ")
     print("6. les mot que tout les président on évoqués.")
@@ -124,8 +137,9 @@ if __name__ == '__main__':
     for dic in tab:
         say2 = []
         for word in dic:
-            if word in say1:
+            if word in say1 :
                 say2.append(word)
         say1 = say2
     for word in say1:
         print("    -", word)
+    """
