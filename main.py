@@ -26,12 +26,12 @@ if __name__ == '__main__':
     for file in list_of_files:
         clean_files(file)
 
-    m_tf_idf, dic_files, dic_words = tf_idf(list_of_files)
+    m_tf_idf, dic_files, dic_words = tf_idf(list_of_files, "cleaned")
 
-    question = "je sUis tom pèRe monsieur, nous p"
+    question = "je suis le président de la france"
     print(tok(question))
     print(question_in_corp(m_tf_idf, dic_files, dic_words, question))
-
+    print(tf_idf_question(m_tf_idf, dic_files, dic_words, list_of_files, question))
 
     """
     ### affichage demander ###

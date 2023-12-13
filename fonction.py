@@ -71,37 +71,33 @@ def clean_files(file_name):
 ### TF-IDF ###
 
 
-def tf(file_name):
+def tf(file_name, case):
     """
         tf : Donne la fréquence d'un terme dans un fichier.
         - Entrées : file_name = nom du fichier a tf-idéiser.
+                    case = nom du dossier des fichier.
         - Sortie : dic_of_words = un dictionnaire de tout les mots du fichier avec leur fréquence.
     """
-    with open("cleaned/"+file_name, "r", encoding="utf-8") as file:
+    with open(case+"/"+file_name, "r", encoding="utf-8") as file:
         f_content = file.read()
         dic_of_words = {}
-        word = ""
-        for carac in f_content:
-            if carac != " ":
-                word += carac
-            else:
+        for word in f_content.split(" "):
                 if word in dic_of_words:
                     dic_of_words[word] += 1
-                    word = ""
                 else:
                     dic_of_words[word] = 1
-                    word = ""
         return dic_of_words
 
-def idf(list_of_files):
+def idf(list_of_files, case):
     """
         idf : Calcule le score IDF (log((nb_fichier/nb_fichier_mot) + 1)) de chaque mot dans un dictionnaire.
         - Entrées : list_of_files = liste de nom de fichier.
+                    case = nom du dossier des fichier.
         - Sortie : idf_dic = un dictionnaire de tout les score IDF de tout les mot de tout les fichier de la liste de nom de fichier donné en entré.
     """
     words_of_files = {}
     for file in list_of_files:
-        dic = tf(file)
+        dic = tf(file, case)
         for key in dic:
             if key in words_of_files:
                 words_of_files[key] += 1
@@ -112,22 +108,23 @@ def idf(list_of_files):
         idf_dic[key] = math.log10((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot))
     return idf_dic
 
-def tf_idf(list_of_files):
+def tf_idf(list_of_files, case):
     """
         tf_idf : Calcule le score TF-IDF grace au deux dictionnaire donné par les deux fonctions ("tf" et "idf").
         - Entrées : list_of_files = liste de nom de fichier.
+                    case = nom du dossier des fichier.
         - Sortie : m_tf_idf = une matrice des vecteur TF-IDF (colonne = fichier, ligne = mot)
                    dic_files = un dictionnaire des fichier (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
                    dic_words = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf")
         /!\ la sortie des 3 variable se fait en tuple.
     """
-    idf_dic = idf(list_of_files)
+    idf_dic = idf(list_of_files, case)
     m_tf_idf = [[0.0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
     dic_files = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
     dic_words = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
 
     for file in list_of_files:
-        tf_dic = tf(file)
+        tf_dic = tf(file, case)
         for word in tf_dic:
             m_tf_idf[dic_words[word]][dic_files[file]] = tf_dic[word] * idf_dic[word] # calcule vecteur TF-IDF a l'emplacement du mot dans la matrice (ligne = valeur du mot dans le dictionnaire "dic_words", colonne = valeur du nom du fichier dans le dictionnaire "dic_files").
 
@@ -162,14 +159,16 @@ def question_in_corp(m_tf_idf, dic_files, dic_words, question):
                 result.append((word, m_tf_idf[dic_words[word]]))
     return result
 
-def tf_idf_question(m_tf_idf, dic_files, dic_words, question):
-    m_tf_idf_question = [[0.0 for k in range(len(m_tf_idf[0]))] for i in range(len(m_tf_idf))]
-    tf_word_question = {}
-    for word in question:
-        """
-        faire foncton pas important
-        """
-        if word not in
-        tf_word_question[word] = tf(word)
-        
+def tf_idf_question(m_tf_idf, dic_files, dic_words, list_of_files, question):
+    with open("cleaned/"+"question_test_a_changer_sah.txt", "w", encoding="utf-8") as file:
+        file.write(" ".join(tok(question)))
+
+    idf_dic = idf(list_of_files, "cleaned")
+    tf_idf_question = [0.0 for i in range(len(idf_dic))]
+    tf_question = tf("question_test_a_changer_sah.txt", "cleaned")
+
+    for word in tok(question):
+        tf_idf_question[dic_words[word]] = tf_question[word] * idf_dic[word]
+
+    return (tf_idf_question, dic_words)
 
