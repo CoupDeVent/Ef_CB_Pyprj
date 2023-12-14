@@ -56,52 +56,48 @@ def clean_files(file_name):
     with open("speeches/"+file_name, "r", encoding="utf-8") as file, open("cleaned/"+file_name, "w", encoding="utf-8") as file_clean:
         f_content = file.read()
         new_content = ""
-        world = ""
-        for carac in f_content:
+        word = ""
+        for carac in (f_content + " "):
             if (ord(carac) >= 65 and ord(carac) <= 90) or (ord(carac) >= 192 and ord(carac) <= 223):
-                world += chr(ord(carac)+32)
+                word += chr(ord(carac)+32)
             elif (ord(carac) >= 97 and ord(carac) <= 122) or (ord(carac) >= 224 and ord(carac) <= 255):
-                world += carac
-            elif world != "":
-                new_content += world + " "
-                world = ""
+                word += carac
+            elif word != "":
+                new_content += word + " "
+                word = ""
         file_clean.write(new_content)
 
 
 ### TF-IDF ###
 
 
-def tf(file_name):
+def tf(file_name, case):
     """
         tf : Donne la fréquence d'un terme dans un fichier.
         - Entrées : file_name = nom du fichier a tf-idéiser.
+                    case = nom du dossier des fichier.
         - Sortie : dic_of_words = un dictionnaire de tout les mots du fichier avec leur fréquence.
     """
-    with open("cleaned/"+file_name, "r", encoding="utf-8") as file:
+    with open(case+"/"+file_name, "r", encoding="utf-8") as file:
         f_content = file.read()
         dic_of_words = {}
-        word = ""
-        for carac in f_content:
-            if carac != " ":
-                word += carac
-            else:
+        for word in f_content.split(" "):
                 if word in dic_of_words:
                     dic_of_words[word] += 1
-                    word = ""
-                else:
+                elif word != "":
                     dic_of_words[word] = 1
-                    word = ""
         return dic_of_words
 
-def idf(list_of_files):
+def idf(list_of_files, case):
     """
         idf : Calcule le score IDF (log((nb_fichier/nb_fichier_mot) + 1)) de chaque mot dans un dictionnaire.
         - Entrées : list_of_files = liste de nom de fichier.
+                    case = nom du dossier des fichier.
         - Sortie : idf_dic = un dictionnaire de tout les score IDF de tout les mot de tout les fichier de la liste de nom de fichier donné en entré.
     """
     words_of_files = {}
     for file in list_of_files:
-        dic = tf(file)
+        dic = tf(file, case)
         for key in dic:
             if key in words_of_files:
                 words_of_files[key] += 1
@@ -109,34 +105,148 @@ def idf(list_of_files):
                 words_of_files[key] = 1
     idf_dic = {}
     for key in words_of_files:
-        idf_dic[key] = math.log((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot) + 1)
+        idf_dic[key] = math.log10((len(list_of_files)/words_of_files[key])) # calcule du score idf : log((nb_fichier/mot))
     return idf_dic
 
-def tf_idf(list_of_files):
+def tf_idf(list_of_files, case):
     """
         tf_idf : Calcule le score TF-IDF grace au deux dictionnaire donné par les deux fonctions ("tf" et "idf").
         - Entrées : list_of_files = liste de nom de fichier.
+                    case = nom du dossier des fichier.
         - Sortie : m_tf_idf = une matrice des vecteur TF-IDF (colonne = fichier, ligne = mot)
                    dic_files = un dictionnaire des fichier (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
                    dic_words = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf")
         /!\ la sortie des 3 variable se fait en tuple.
     """
-    idf_dic = idf(list_of_files)
-    m_tf_idf = [[0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
+    idf_dic = idf(list_of_files, case)
+    m_tf_idf = [[0.0 for k in range(len(list_of_files))] for i in range(len(idf_dic))] # création d'un tableau de "len(list_of_files)" lignes et de "len(idf_dic)" colonnes.
     dic_files = {file: k for file, k in zip(list_of_files, range(len(list_of_files)))} # création d'un dictionnaire de key = "file" dans "list_of_files" et valeur = "k" = compteur de longueur de "list_of_file".
     dic_words = {word: k for word, k in zip(idf_dic, range(len(idf_dic)))} # création d'un dictionnaire de key = "word" dans "idf_dic" et valeur = "k" = compteur de longueur de "idf_dic".
 
     for file in list_of_files:
-        tf_dic = tf(file)
+        tf_dic = tf(file, case)
         for word in tf_dic:
             m_tf_idf[dic_words[word]][dic_files[file]] = tf_dic[word] * idf_dic[word] # calcule vecteur TF-IDF a l'emplacement du mot dans la matrice (ligne = valeur du mot dans le dictionnaire "dic_words", colonne = valeur du nom du fichier dans le dictionnaire "dic_files").
 
     return (m_tf_idf, dic_files, dic_words) # tuple
 
 
+### Partie II, Réponses aux questions. ###
 
+def tok(question):
+    words = []
+    word = ""
+    for carac in (question + " "):
+        if (ord(carac) >= 65 and ord(carac) <= 90) or (ord(carac) >= 192 and ord(carac) <= 223):
+            word += chr(ord(carac) + 32)
+        elif (ord(carac) >= 97 and ord(carac) <= 122) or (ord(carac) >= 224 and ord(carac) <= 255):
+            word += carac
+        elif word != "":
+            words.append(word)
+            word = ""
+    return words
 
+def question_in_corp(m_tf_idf, dic_files, dic_words, question):
+    question = tok(question)
+    result = []
+    for word in dic_words:
+        if word in question:
+            non_important = True
+            for val in m_tf_idf[dic_words[word]]:
+                if val != 0.0:
+                    non_important = False
+            if non_important == False:
+                result.append((word, m_tf_idf[dic_words[word]]))
+    return result
 
+def tf_idf_question(dic_words, liste_of_files, question):
+    with open("cleaned/"+"question_test_a_changer_sah.txt", "w", encoding="utf-8") as file:
+        file.write(" ".join(tok(question)))
 
+    idf_corp = idf(liste_of_files, "cleaned")
+    tf_idf_question = [0.0 for i in range(len(idf_corp))]
+    tf_question = tf("question_test_a_changer_sah.txt", "cleaned")
 
+    for word in tok(question):
+        if word in idf_corp:
+            tf_idf_question[dic_words[word]] = tf_question[word] * idf_corp[word]
 
+    return tf_idf_question
+
+#simi# ###################################################
+
+def transposed_matrix(matrix):
+    transposed_matrix = [[None for k in range(len(matrix))] for i in range(len(matrix[0]))]
+
+    for i in range(len(matrix[0])):
+        for j in range(len(matrix)):
+            transposed_matrix[i][j] = matrix[j][i]
+
+    return transposed_matrix
+def scalar_product(vector_a, vector_b):
+    scalar_product = 0.0
+
+    for k in range(len(vector_a)):
+        scalar_product += vector_a[k] * vector_b[k]
+
+    return scalar_product
+
+def norm_vector(vector):
+    norm_vector = 0.0
+
+    for val in vector:
+        norm_vector += val**2
+
+    return math.sqrt(norm_vector)
+
+def similarity(vector_a, vector_b):
+    return (scalar_product(vector_a, vector_b)) / (norm_vector(vector_a) * norm_vector(vector_b))
+
+def best_sim_question(tf_idf_corp, tf_idf_question, dic_files):
+    max_sim_question = 0.0
+    name_max_sim_question = ""
+
+    for name in dic_files:
+        temp = similarity(transposed_matrix(tf_idf_corp)[dic_files[name]], tf_idf_question)
+        if temp > max_sim_question:
+            max_sim_question = temp
+            name_max_sim_question = name
+
+    return name_max_sim_question
+
+#reponce #############################################
+
+def sentences_in_file(file_name):
+    sentences = []
+
+    with open("speeches/"+file_name, "r", encoding="utf-8") as file:
+        f_content = file.read()
+        sentence = ""
+        for carac in f_content:
+            if carac == "." or carac == "\n":
+                sentences.append(sentence)
+                sentence = ""
+            else:
+                sentence += carac
+    return sentences
+
+def awnser(tf_idf_corp, dic_files, dic_words, liste_of_files, question):
+    tf_idf_quest = tf_idf_question(dic_words, liste_of_files, question)
+    best_sim = best_sim_question(tf_idf_corp, tf_idf_quest, dic_files)
+    question_starters = {
+        "Comment": "Après analyse, ",
+        "Pourquoi": "Car, ",
+        "Peux-tu": "Oui, bien sûr!"
+    }
+
+    max_tf_idf_quest = 0.0
+    word_max_tf_idf_quest = ""
+    for k in range(len(tf_idf_quest)):
+        if tf_idf_quest[k] > max_tf_idf_quest:
+            max_tf_idf_quest = tf_idf_quest[k]
+            word_max_tf_idf_quest = list(dic_words.keys())[k]
+
+    for sentence in sentences_in_file(best_sim):
+        if word_max_tf_idf_quest in sentence:
+            return question_starters[question.split(" ")[0]] + sentence + "."
+    return None
