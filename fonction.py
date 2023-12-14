@@ -84,7 +84,7 @@ def tf(file_name, case):
         for word in f_content.split(" "):
                 if word in dic_of_words:
                     dic_of_words[word] += 1
-                else:
+                elif word != "":
                     dic_of_words[word] = 1
         return dic_of_words
 
@@ -159,16 +159,94 @@ def question_in_corp(m_tf_idf, dic_files, dic_words, question):
                 result.append((word, m_tf_idf[dic_words[word]]))
     return result
 
-def tf_idf_question(m_tf_idf, dic_files, dic_words, list_of_files, question):
+def tf_idf_question(dic_words, liste_of_files, question):
     with open("cleaned/"+"question_test_a_changer_sah.txt", "w", encoding="utf-8") as file:
         file.write(" ".join(tok(question)))
 
-    idf_dic = idf(list_of_files, "cleaned")
-    tf_idf_question = [0.0 for i in range(len(idf_dic))]
+    idf_corp = idf(liste_of_files, "cleaned")
+    tf_idf_question = [0.0 for i in range(len(idf_corp))]
     tf_question = tf("question_test_a_changer_sah.txt", "cleaned")
 
     for word in tok(question):
-        tf_idf_question[dic_words[word]] = tf_question[word] * idf_dic[word]
+        if word in idf_corp:
+            tf_idf_question[dic_words[word]] = tf_question[word] * idf_corp[word]
 
-    return (tf_idf_question, dic_words)
+    return tf_idf_question
 
+#simi# ###################################################
+
+def transposed_matrix(matrix):
+    transposed_matrix = [[None for k in range(len(matrix))] for i in range(len(matrix[0]))]
+
+    for i in range(len(matrix[0])):
+        for j in range(len(matrix)):
+            transposed_matrix[i][j] = matrix[j][i]
+
+    return transposed_matrix
+def scalar_product(vector_a, vector_b):
+    scalar_product = 0.0
+
+    for k in range(len(vector_a)):
+        scalar_product += vector_a[k] * vector_b[k]
+
+    return scalar_product
+
+def norm_vector(vector):
+    norm_vector = 0.0
+
+    for val in vector:
+        norm_vector += val**2
+
+    return math.sqrt(norm_vector)
+
+def similarity(vector_a, vector_b):
+    return (scalar_product(vector_a, vector_b)) / (norm_vector(vector_a) * norm_vector(vector_b))
+
+def best_sim_question(tf_idf_corp, tf_idf_question, dic_files):
+    max_sim_question = 0.0
+    name_max_sim_question = ""
+
+    for name in dic_files:
+        temp = similarity(transposed_matrix(tf_idf_corp)[dic_files[name]], tf_idf_question)
+        if temp > max_sim_question:
+            max_sim_question = temp
+            name_max_sim_question = name
+
+    return name_max_sim_question
+
+#reponce #############################################
+
+def sentences_in_file(file_name):
+    sentences = []
+
+    with open("speeches/"+file_name, "r", encoding="utf-8") as file:
+        f_content = file.read()
+        sentence = ""
+        for carac in f_content:
+            if carac == "." or carac == "\n":
+                sentences.append(sentence)
+                sentence = ""
+            else:
+                sentence += carac
+    return sentences
+
+def awnser(tf_idf_corp, dic_files, dic_words, liste_of_files, question):
+    tf_idf_quest = tf_idf_question(dic_words, liste_of_files, question)
+    best_sim = best_sim_question(tf_idf_corp, tf_idf_quest, dic_files)
+    question_starters = {
+        "Comment": "Après analyse, ",
+        "Pourquoi": "Car, ",
+        "Peux-tu": "Oui, bien sûr!"
+    }
+
+    max_tf_idf_quest = 0.0
+    word_max_tf_idf_quest = ""
+    for k in range(len(tf_idf_quest)):
+        if tf_idf_quest[k] > max_tf_idf_quest:
+            max_tf_idf_quest = tf_idf_quest[k]
+            word_max_tf_idf_quest = list(dic_words.keys())[k]
+
+    for sentence in sentences_in_file(best_sim):
+        if word_max_tf_idf_quest in sentence:
+            return question_starters[question.split(" ")[0]] + sentence + "."
+    return None
