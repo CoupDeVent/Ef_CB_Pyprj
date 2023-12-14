@@ -29,7 +29,8 @@ if __name__ == '__main__':
 
     m_tf_idf, dic_files, dic_words = tf_idf(list_of_files, "cleaned")
 
-    print(affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files))
+    #print(affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files))
 
     question = "Comment une nation peut-elle prendre soin du climat ?"
 
+    print(tf_idf_question(dic_words, list_of_files, question))
