@@ -1,6 +1,25 @@
+"""
+ _____                                                      _____
+( ___ )                                                    ( ___ )
+ |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   |
+ |   |                                                      |   |
+ |   |      _____  _____  _______      __             _     |   |
+ |   |     / ____||  __ \|__   __|    / _|           (_)    |   |
+ |   |    | |  __ | |__) |  | |  ___ | |_  _ __  ___  _     |   |
+ |   |    | | |_ ||  ___/   | | / _ \|  _|| '__|/ _ \| |    |   |
+ |   |    | |__| || |       | ||  __/| |  | |  |  __/| |    |   |
+ |   |     \_____||_|       |_| \___||_|  |_|   \___||_|    |   |
+ |   |                                                      |   |
+ |___|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|___|
+(_____)                                                    (_____)
+
+GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--Menu
+
+Vous êtes actuelemnt dans le fichier affichage_demande.py qui est le fichier des fonction d'affichage demandé dans la partie I du projet.
+"""
 from fonction import *
 
-def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
+def affichage_demande_1(m_tf_idf, dic_words, list_of_files):
     print("1. Mots les moins importants.")
     not_inportant = []
     for i_word in range(len(m_tf_idf)):
@@ -13,11 +32,10 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
     for word in not_inportant:
         print("    -", word)
 
-    print(" ")
+def affichage_demande_2(m_tf_idf, dic_words, list_of_files):
     print("2. Le mot avec le score TF-IDF le plus élevé.")
     word_max = ""
     max = 0
-    words = dic_words.keys()
     for i_file in range(len(m_tf_idf[0])):
         for i_word in range(len(m_tf_idf)):
             if m_tf_idf[i_word][i_file] > max:
@@ -25,8 +43,18 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
                 word_max = list(dic_words.keys())[i_word]
     print("    -", word_max)
 
-    print(" ")
+def affichage_demande_3(m_tf_idf, dic_words, list_of_files):
     print("3. Le mot le plus répété par Chirac")
+
+    not_inportant = []
+    for i_word in range(len(m_tf_idf)):
+        result = True
+        for i_file in range(len(m_tf_idf[0])):
+            if m_tf_idf[i_word][i_file] != 0.0:
+                result = False
+            if i_file == len(m_tf_idf[0]) - 1 and result == True:
+                not_inportant.append(list(dic_words.keys())[i_word])
+
     list_file_chirac = ["Nomination_Chirac1.txt", "Nomination_Chirac2.txt"]
     max_chirac = ""
     chirac_words = {}
@@ -47,7 +75,8 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
     for word in max_chirac:
         print("    -", word)
 
-    print(" ")
+
+def affichage_demande_4(m_tf_idf, dic_words, list_of_files):
     print("4. les noms des présidents qui ont parlé de la « Nation » et celui qui l’a répété le plus de fois")
     p_nation_count = {
         "Giscard dEstaing": 0,
@@ -58,13 +87,11 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
         "Hollande": 0
     }
 
-
     def name_temp(name):
         name = name[11:(len(name)) - 4]
         while (ord(name[len(name) - 1]) >= 48) and (ord(name[len(name) - 1]) <= 57):
             name = name[:len(name) - 1]
         return name
-
 
     for file in list_of_files:
         nb_words = tf(file, "cleaned")
@@ -84,16 +111,24 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
     print(" ")
     print("    -", p_max, "a dit le plus de fois nation.")
 
-    print(" ")
+
+def affichage_demande_5(m_tf_idf, dic_words, list_of_files):
     print("5. le premier président a avoir parler du climat.")
+
+    def name_temp(name):
+        name = name[11:(len(name)) - 4]
+        while (ord(name[len(name) - 1]) >= 48) and (ord(name[len(name) - 1]) <= 57):
+            name = name[:len(name) - 1]
+        return name
+
     for file in list_of_files:
         nb_words = tf(file, "cleaned")
         for word in nb_words:
-            if word == "climat" or word == "écoàlogie":
+            if word == "climat" or word == "écologie":
                 first = name_temp(file)
     print("    -", first)
 
-    print(" ")
+def affichage_demande_6(m_tf_idf, dic_words, list_of_files):
     print("6. les mot que tout les président on évoqués.")
     tab = []
     say1 = []
@@ -110,5 +145,3 @@ def affichage_demander(m_tf_idf, dic_files, dic_words, list_of_files):
     for word in say1:
         print("    -", word)
     print()
-
-    return "Fin affichage demander"
