@@ -18,7 +18,7 @@ GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--M
 
 ## Installation
 
-Vous pouvez retrouver notre ChatBot sur GitHub en suivant le lien suivant : 
+Vous pouvez retrouver notre ChatBot sur GitHub en suivant le lien suivant : https://github.com/CoupDeVent/pychatbot-Eytan-Tim-F.git
 
 ## Configuration
 
@@ -26,8 +26,10 @@ Le programme nécessite un interpréteur de langage Python pouvant accéder à d
 
 ## Utilisation :
 
+L'utilisation de GptEfrei se fait depuis un menu disponible après l'exécution du fichier main.py par un interpréteur compatible.
+
 V0 : Le programme sert à extraire des noms ainsi que des mots pour leur attribuer un score grâce à la fonction TF-IDF.
-*V1 en cours de développement*
+V1 : Le chatbot est fonctionnel et permet un échange question réponse.
 
 
 ## Contact :
@@ -39,7 +41,7 @@ tim.nguyen--menu@efrei.net
 ## Historique des versions :
 
 V0 : mise en ligne le 26/11/2023
-
+V1 : mise ne ligne le 17/11/2023
 
 ## Crédits et Remerciements :
 
