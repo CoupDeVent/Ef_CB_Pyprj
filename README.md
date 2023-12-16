@@ -28,7 +28,7 @@ Le programme nécessite un interpréteur de langage Python pouvant accéder à d
 
 L'utilisation de GptEfrei se fait depuis un menu disponible après l'exécution du fichier main.py par un interpréteur compatible.
 
-<br>V0 : Le programme sert à extraire des noms ainsi que des mots pour leur attribuer un score grâce à la fonction TF-IDF.
+<br>V0 : Mise en place des fonctions dite "Fondation".
 <br>V1 : Le chatbot est fonctionnel et permet un échange question réponse.
 
 
