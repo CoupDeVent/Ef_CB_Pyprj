@@ -66,7 +66,7 @@ Voici toutes les fonctionnalités disponibles sur GptEfrei :""")
 4- Quitter 
 """)
 
-        fonctionnalite = int(input("Pour accéder a l'une d'entre elles vous pouvez renseigné le numéro associer a la fonctionnaliser : "))
+        fonctionnalite = int(input("Pour accéder a l'une d'entre elles vous pouvez renseigner le numéro associé a la fonctionnalité : "))
         while fonctionnalite < 1 or fonctionnalite > 4:
             fonctionnalite = int(input("Vous n'avez pas saisi un nombre correct, ressaisissez un nombre : "))
 
@@ -78,7 +78,7 @@ Voici toutes les fonctionnalités disponibles sur GptEfrei :""")
 
 Vous avez choisi la fonctionnalité de question/réponse.
 Dans cette dernière vous pouvez poser une question et GptEfrei vous répondra en fonction. 
-Il faut prendre en compte que les réponses renvoyer par GptEfrei sont proportionnellement précise en fonction du nombre de fichiers dans la base de données, ainsi si vous voulez des réponses plus précises il vous faut enrichir le dossier cleanned. """)
+Il faut prendre en compte que les réponses renvoyées par GptEfrei sont proportionnellement précises en fonction du nombre de fichiers dans la base de données, ainsi si vous voulez des réponses plus précises il vous faut enrichir le dossier cleanned. """)
 
             choix = "question"
             while choix != "quitter":
@@ -197,8 +197,8 @@ Vous avez choisi la fonctionnalité d'afficher tous les fichiers de la base de d
 
                 choix = str(input("""
 Maintenant vous pouvez soit :
-- Choisire d'afficher les fichers de la base de données en écrivant 'base de données'.
-- Soit quittée en écrivant 'quitter'.
+- Choisir d'afficher les fichers de la base de données en écrivant 'base de données'.
+- Soit quitter en écrivant 'quitter'.
 Que voulez-vous faire ? """))
                 while choix != "base de données" and choix != "quitter":
                     choix = str(input("Votre choix est mauvais, pouvez-vous le réécrire : "))
