@@ -15,7 +15,7 @@
 
 GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--Menu
 
-Vous êtes actuelemnt dans le fichier fonction.py qui est le fichier contenant toute les fonction nécésaire au bon fonctionnement de GptEfrei.
+Vous êtes actuelemnt dans le fichier fonction.py qui est le fichier contenant toute les fonctions nécessaires au bon fonctionnement de GptEfrei.
 """
 ### import ###
 
@@ -32,10 +32,10 @@ from time import sleep
 
 def list_of_files(directory, extension):
     """
-    list_of_files : liste tout les noms de fichier dans un dossier.
+    list_of_files : liste tous les noms de fichier dans un dossier.
     - Entrées : directory = dossier des fichiers a listés.
-                extension = l'extension commune de tout les fichiers.
-    - Sortie : files_names = une liste de tout les noms des fichiers listés.
+                extension = l'extension commune de tous les fichiers.
+    - Sortie : files_names = une liste de tous les noms des fichiers listés.
     """
     files_names = []
 
@@ -47,11 +47,11 @@ def list_of_files(directory, extension):
 
 def s_p_names(directory, extension):
     """
-        s_p_names : donne tout les noms des présidents grace a un dossier spécifier en entré en suivant la logique de nomination des fichiers speeches.
+        s_p_names : donne tous les noms des présidents grâce a un dossier spécifié en entrée en suivant la logique de nomination des fichiers speeches.
         - Entrées : directory = dossier des fichiers.
-                    extension = l'extension commune de tout les fichiers.
-        - Sortie : p_names = une liste de tout les prénom et nom des président du dossier.
-        /!\ : tout les fichiers du dossier doivent suivre une nomination spécifique.
+                    extension = l'extension commune de tous les fichiers.
+        - Sortie : p_names = une liste de tous les prénoms et noms des président du dossier.
+        /!\ : tous les fichiers du dossier doivent suivre une nomination spécifique.
     """
     p_f_names = {
         "Giscard dEstaing": "Valéry",
@@ -76,11 +76,11 @@ def s_p_names(directory, extension):
 
 def clean_files(file_name):
     """
-        clean_files : clean le fichier donné en entré de toutes ses : majuscule, marque de ponctuation, espace supérieur a 1 et saut de ligne. (fichier ouvert en utf-8)
-        - Entrées : file_name = nom du fichier a clean.
-        - Sortie : créer/modifie un fichier du même nom dans un dossier "cleaned" avec les modification.
-        /!\ : nécésite un dossier "cleaned" créer au préalable.
-        /!\ : si fichier déjà présent dans le dossier "cleaned" alors son contenu sera écraser.
+        clean_files : clean le fichier donné en entrée de toutes ses : majuscule(s), marque(s) de ponctuation, espace(s) supérieur(s) à 1 et saut de ligne. (fichier ouvert en utf-8)
+        - Entrées : file_name = nom du fichier à clean.
+        - Sortie : créer/modifie un fichier du même nom dans un dossier "cleaned" avec les modifications.
+        /!\ : nécésite un dossier "cleaned" créé au préalable.
+        /!\ : si fichier déjà présent dans le dossier "cleaned" alors son contenu sera écrasé.
     """
     with open("speeches/"+file_name, "r", encoding="utf-8") as file, open("cleaned/"+file_name, "w", encoding="utf-8") as file_clean:
         f_content = file.read()
@@ -105,7 +105,7 @@ def tf(file_name, case):
         tf : Donne la fréquence d'un terme dans un fichier.
         - Entrées : file_name = nom du fichier a tf-idéiser.
                     case = nom du dossier du fichier.
-        - Sortie : dic_of_words = un dictionnaire de tout les mots du fichier avec leur fréquence.
+        - Sortie : dic_of_words = un dictionnaire de tous les mots du fichier avec leurs fréquences.
     """
     if case != "":
         case += "/"
@@ -127,7 +127,7 @@ def idf(list_of_files, case):
         idf : Calcule le score IDF (log((nb_fichier/nb_fichier_mot) + 1)) de chaque mot dans un dictionnaire.
         - Entrées : list_of_files = liste de nom de fichier.
                     case = nom du dossier des fichier.
-        - Sortie : idf_dic = un dictionnaire de tout les score IDF de tout les mot de tout les fichier de la liste de nom de fichier donné en entré.
+        - Sortie : idf_dic = un dictionnaire de tous les scores IDF de tout les mots de tous les fichiers de la liste de noms de fichiers donnés en entrée.
     """
     words_of_files = {}
     idf_dic = {}
@@ -147,11 +147,11 @@ def idf(list_of_files, case):
 
 def tf_idf(list_of_files, case):
     """
-        tf_idf : Calcule le score TF-IDF grace au deux dictionnaire donné par les deux fonctions ("tf" et "idf").
+        tf_idf : Calcule le score TF-IDF grâce aux deux dictionnaires donnés par les deux fonctions ("tf" et "idf").
         - Entrées : list_of_files = liste de nom de fichier.
-                    case = nom du dossier des fichier.
-        - Sortie : m_tf_idf = une matrice des vecteur TF-IDF (colonne = fichier, ligne = mot)
-                   dic_files = un dictionnaire des fichier (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
+                    case = nom du dossier des fichiers.
+        - Sortie : m_tf_idf = une matrice des vecteurs TF-IDF (colonne = fichier, ligne = mot)
+                   dic_files = un dictionnaire des fichiers (key = nom du fichier, valeur = index (colonne) des fichiers dans la matrice "m_tf_idf")
                    dic_words = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf")
         /!\ la sortie des 3 variable se fait en tuple.
     """
@@ -173,9 +173,9 @@ def tf_idf(list_of_files, case):
 
 def tok(question):
     """
-    tok : toketis une chaine de caractère à l'instar de la fonction "clean_files" qui clean un fichier.
-    - Entrées : question = une chaine de caractère.
-    - Sortie : words = une list de tout les mot "clean" de la chaine de caractère donné en entrée.
+    tok : toketis une chaîne de caractères à l'instar de la fonction "clean_files" qui clean un fichier.
+    - Entrées : question = une chaîne de caractère.
+    - Sortie : words = une liste de tous les mots "clean" de la chaîne de caractères donnés en entrée.
     """
     words = []
     word = ""
@@ -192,7 +192,7 @@ def tok(question):
     return words
 
 """
-fonction demander dans le pdf de la partie II et III mais non utilisée dans le code.
+fonction demandée dans le pdf de la partie II et III mais non utilisée dans le code.
 def question_in_corp(m_tf_idf, dic_words, question):
     question = tok(question)
     result = []
@@ -211,12 +211,12 @@ def question_in_corp(m_tf_idf, dic_words, question):
 
 def tf_idf_question(dic_words, liste_of_files, question):
     """
-    tf_idf_question : calcule le vecteur TF-IDF de la chaine de caractère "question" donnée en entrée.
+    tf_idf_question : calcule le vecteur TF-IDF de la chaîne de caractère "question" donnée en entrée.
     - Entrées : dic_words = un dictionnaire des mots (key = mots, valeur = index (colonne) des mots dans la matrice"m_tf_idf") donnée par la fonction "tf_idf".
-                liste_of_files = une liste de nom de fichier (fichier du corpus étudier).
-                question = une chaine de caractère dont on veut le TF-IDF
-    - Sortie : tf_idf_question = une matrice des vecteur TF-IDF (colonne = fichier, ligne = mot) (elle possède le même paterne que la matrice tf_idf renvoyer par la fonction "tf_idf".
-    /!\ si "question" est une chaine de caractère vide alors la matrice "tf_idf_question" renvoyer sera composer de 0.0.
+                liste_of_files = une liste de noms de fichiers (fichier du corpus étudier).
+                question = une chaîne de caractères dont on veut le TF-IDF
+    - Sortie : tf_idf_question = une matrice des vecteurs TF-IDF (colonne = fichier, ligne = mot) (elle possède le même paterne que la matrice tf_idf renvoyer par la fonction "tf_idf".
+    /!\ si "question" est une chaîne de caractères vide alors la matrice "tf_idf_question" renvoyée sera composée de 0.0.
     """
     tok_question = tok(question)
     with open("question.txt", "w", encoding="utf-8") as file: # créer/modifie un fichier question qui permet de mêtre la variable "question" en fichier pour facilité le traitement notament pour le calcule de TF-IDF.
@@ -238,9 +238,9 @@ def tf_idf_question(dic_words, liste_of_files, question):
 
 def transposed_matrix(matrix):
     """
-    transposed_matrix : donne la transposer d'une matrice.
+    transposed_matrix : donne la transposée d'une matrice.
     - Entrées : matrix = une matrice.
-    - Sortie : transposed_matrix = la transposer de la matrice "matrix".
+    - Sortie : transposed_matrix = la transposée de la matrice "matrix".
     """
     if len(matrix) == 1 and len(matrix[0]) == 1: # si la matrice est de 1:1 alors sa transposer ne change rien a la matrice original (permet d'empécher des "out of range").
         return matrix
@@ -255,14 +255,14 @@ def transposed_matrix(matrix):
 
 def scalar_product(vector_a, vector_b):
     """
-    scalar_product : donne le produit scalaire de deux vecteur a et b.
+    scalar_product : donne le produit scalaire de deux vecteurs a et b.
     - Entrées : vector_a = un vecteur.
                 vector_b = un vecteur.
     - Sortie : scalar_product = le produit scalaire du "vector_a" avec "vector_b".
-    /!\ les deux vecteur doivent être de longueur égale.
+    /!\ les deux vecteurs doivent être de longueur égale.
     """
     if len(vector_a) != len(vector_b):
-        raise ValueError("Les deux vecteur doivent être de longueur différente.") # erreur personnalisée si les deux vecteur ne sont pas de longueur égale.
+        raise ValueError("Les deux vecteurs doivent être de longueurs différentes.") # erreur personnalisée si les deux vecteurs ne sont pas de longueurs égales.
 
     scalar_product = 0.0
 
@@ -275,7 +275,7 @@ def norm_vector(vector):
     """
     norm_vector : donne la norme d'un vecteur.
     - Entrées : vector = un vecteur.
-    - Sortie : math.sqrt(norm_vector) = la norme du vecteur après l'application de la formule ||vector|| (trouveable sur le pdf de la partie II et III question 4.b.
+    - Sortie : math.sqrt(norm_vector) = la norme du vecteur après l'application de la formule ||vector|| (trouvable sur le pdf de la partie II et III question 4.b.
     """
     norm_vector = 0.0
 
@@ -286,14 +286,14 @@ def norm_vector(vector):
 
 def similarity(vector_a, vector_b):
     """
-    similarity : calcule la similarité de deux vecteur.
+    similarity : calcule la similarité de deux vecteurs.
     - Entrées : vector_a = un vecteur.
                 vector_b = un vecteur.
     - Sortie : (scalar_product(vector_a, vector_b)) / (norm_vector(vector_a) * norm_vector(vector_b)) = l'application de la formule de la similarité.
     /!\ les deux vecteur doivent être de longueur égale.
     """
     if len(vector_a) != len(vector_b):
-        raise ValueError("Les deux vecteur doivent être de longueur différente.") # erreur personnalisée si les deux vecteur ne sont pas de longueur égale.
+        raise ValueError("Les deux vecteurs doivent être de longueurs différentes.") # erreur personnalisée si les deux vecteurs ne sont pas de longueur égale.
 
     return (scalar_product(vector_a, vector_b)) / (norm_vector(vector_a) * norm_vector(vector_b))
 
@@ -322,9 +322,9 @@ def best_sim_question(tf_idf_corp, tf_idf_question, dic_files):
 
 def sentences_in_file(file_name):
     """
-    sentences_in_file : donne toutes les phrase d'un fichier.
+    sentences_in_file : donne toutes les phrases d'un fichier.
     - Entrées : file_name = le nom d'un fichier du dossier "speeches".
-    - Sortie : sentences = une liste de tout les phrases du fichier "file_name".
+    - Sortie : sentences = une liste de toutes les phrases du fichier "file_name".
     """
     sentences = []
 
@@ -343,8 +343,8 @@ def sentences_in_file(file_name):
 def beautiful_awnser(str):
     """
     beautiful_awnser : print de façon plus ChatGPT-esque.
-    - Entrées : str = une chaine de caractère.
-    - Sortie : des print de chaque caractère de la variable "str" a interval alléatoire (qui peut allé de 0.01s a 0.2s en fonction des caractère).
+    - Entrées : str = une chaîne de caractères.
+    - Sortie : des print de chaque caractère de la variable "str" a intervalles alléatoires (qui peut aller de 0.01s a 0.2s en fonction des caractères).
     """
     str += " "
     str_tab = str.split(" ")
@@ -367,9 +367,9 @@ def awnser(tf_idf_corp, dic_files, dic_words, list_of_files, question):
     """
     awnser : donne une réponce a une question en se basant sur la base de données.
     - Entrées : tf_idf_corp = la matrice TF-IDF du corpus.
-                dic_files = un dictionnaire des nom de fichier avec leur index (nécésaire pour la navigation dans les matrice TF-IDF)
-                dic_words = un dictionnaire des mots avec leur index (nécésaire pour la navigation dans les matrice TF-IDF)
-                list_of_files = liste de tout les fichier de la base de données
+                dic_files = un dictionnaire des nom de fichiers avec leur index (nécessaire pour la navigation dans les matrice TF-IDF)
+                dic_words = un dictionnaire des mots avec leur index (nécésaires pour la navigation dans les matrice TF-IDF)
+                list_of_files = liste de tous les fichiers de la base de données
                 question = la question
     - Sortie : sentence = la réponse a la question. C'est la première occurence du mot le plus important de la question dans le fichier avec la plus grande similarité avec la question.
     """
