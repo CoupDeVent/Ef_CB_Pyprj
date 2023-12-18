@@ -15,7 +15,7 @@
 
 GPTefrei est un ChatBot en Python réalisé par Eytan Guernigou et Tim Nguyen--Menu
 
-Vous êtes actuelemnt dans le fichier affichage_demande.py qui est le fichier des fonction d'affichage demandé dans la partie I du projet.
+Vous êtes actuellemennt dans le fichier affichage_demande.py qui est le fichier des fonction d'affichage demandé dans la partie I du projet.
 """
 from fonction import *
 
