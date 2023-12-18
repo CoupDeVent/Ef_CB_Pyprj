@@ -41,7 +41,7 @@ tim.nguyen--menu@efrei.net
 ## Historique des versions :
 
 <br>V0 : mise en ligne le 26/11/2023
-<br>V1 : mise ne ligne le 17/11/2023
+<br>V1 : mise ne ligne le 18/11/2023
 
 ## Crédits et Remerciements :
 
